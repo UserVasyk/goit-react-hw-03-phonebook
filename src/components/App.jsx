@@ -15,6 +15,19 @@ export class App extends Component {
 
     filter: '',
   };
+  componentDidMount() {
+    const pasedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (!pasedContacts) {
+      return;
+    } else {
+      this.setState(() => ({
+        contacts: pasedContacts,
+      }));
+    }
+  }
+  componentDidUpdate() {
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
   addContact = ({ name, number }) => {
     const contact = {
       id: nanoid(),
@@ -42,6 +55,7 @@ export class App extends Component {
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
+
   deleteContact = id => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== id),
