@@ -17,16 +17,16 @@ export class App extends Component {
   };
   componentDidMount() {
     const pasedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (!pasedContacts) {
-      return;
-    } else {
-      this.setState(() => ({
+    if (pasedContacts) {
+      this.setState({
         contacts: pasedContacts,
-      }));
+      });
     }
   }
-  componentDidUpdate() {
-    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.setState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
   }
   addContact = ({ name, number }) => {
     const contact = {
